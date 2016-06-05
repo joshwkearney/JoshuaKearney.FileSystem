@@ -2,7 +2,6 @@
 
 This project was created out of some pieces of code that I found were duplicated across four or more of my projects, so I decided to create a repo. The goal of this project is not to replace System.IO or anything that ambitious, it's simply to supplement the existing APIs and make file IO many times easier.
 
----
 
 ### Path simplification / normalization ###
     string someCompletelyMalformedPath = "\\folder///next\foo//\/bar/../file.txt";
@@ -44,12 +43,9 @@ This project was created out of some pieces of code that I found were duplicated
         Console.WriteLine("Done");
     }
 
----
-
 # NuGet #
-I am currently in the process of placing this package on NuGet, and I'll put the link here when it's online
+This project is on nuget, and can be found [here](https://www.nuget.org/packages/JoshuaKearney.FileSystem/1.0.0).
 
----
 
 # Liscense #
 This project is licensed with the MIT open source license, and you may use, contribute, copy, ect this software as you please.
