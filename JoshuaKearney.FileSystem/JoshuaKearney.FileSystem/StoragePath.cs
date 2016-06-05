@@ -310,9 +310,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <returns></returns>
         public override string ToString() {
-            string ret = string.Join(PathSeparator.BackSlash.GetCharacter().ToString(), this.segments);
-
-            return ret;
+            return this.ToString(PathSeparator.BackSlash);
         }
 
         /// <summary>
@@ -323,7 +321,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="leadingSlash">Whether or not a slash should be prepended to the path</param>
         /// <param name="trailingSlash">Whether or not a slash should be appended to the path</param>
         public string ToString(PathSeparator slashType, bool leadingSlash = false, bool trailingSlash = false) {
-            string ret = this.ToString();
+            string ret = string.Join(slashType.GetCharacter().ToString(), this.segments);
 
             if (leadingSlash && !this.IsAbsolute) {
                 ret = slashType.GetCharacter() + ret;
