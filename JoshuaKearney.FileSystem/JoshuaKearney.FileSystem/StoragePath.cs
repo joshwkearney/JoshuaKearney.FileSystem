@@ -12,26 +12,16 @@ namespace JoshuaKearney.FileSystem {
     /// </summary>
     public class StoragePath : IEquatable<StoragePath> {
         private List<string> segments = new List<string>();
-        private static IEnumerable<char> invalidPathCharacters = Path.GetInvalidPathChars();
-        private static IEnumerable<char> invalidFileNameCharacters = Path.GetInvalidFileNameChars();
 
         /// <summary>
         /// Gets an array containing the characters not allowed in paths
         /// </summary>
-        public static IEnumerable<char> InvalidPathCharacters {
-            get {
-                return invalidPathCharacters;
-            }
-        }
+        public static IEnumerable<char> InvalidPathCharacters { get; } = Path.GetInvalidPathChars();
 
         /// <summary>
         /// Gets an array containing the characters not allowed in file names
         /// </summary>
-        public static IEnumerable<char> InvalidFileNameCharacters {
-            get {
-                return invalidFileNameCharacters;
-            }
-        }
+        public static IEnumerable<char> InvalidFileNameCharacters { get; } = Path.GetInvalidFileNameChars();
 
         /// <summary>
         /// Creates a StoragePath from the specified Uri
