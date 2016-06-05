@@ -27,13 +27,6 @@ namespace JoshuaKearney.FileSystem {
 
         /// <summary>
         /// Creates a new DirectoryBuilder that will place items in the specified directory
-        /// </summary>
-        /// <param name="directory">The target directory</param>
-        public DirectoryBuilder(DirectoryInfo directory) : this(new StoragePath(directory.FullName)) {
-        }
-
-        /// <summary>
-        /// Creates a new DirectoryBuilder that will place items in the specified directory
         /// and uses the specified conflict resolution
         /// </summary>
         /// <param name="directory">The target directory</param>
@@ -197,30 +190,6 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="absolutePath">The location of the existing file or directory on the disk</param>
         public DirectoryBuilder AppendExisting(string absolutePath) {
             return this.AppendExisting(new StoragePath(absolutePath));
-        }
-
-        /// <summary>
-        /// Copies an existing file into the target directory
-        /// </summary>
-        /// <param name="absolutePath">The location of the existing file on the disk</param>
-        public DirectoryBuilder AppendExisting(FileInfo file) {
-            if (!file.Exists) {
-                throw new FileNotFoundException();
-            }
-
-            return this.AppendExisting(new StoragePath(file.FullName));
-        }
-
-        /// <summary>
-        /// Copies an existing directory into the target directory
-        /// </summary>
-        /// <param name="absolutePath">The location of the directory on the disk</param>
-        public DirectoryBuilder AppendExisting(DirectoryInfo directory) {
-            if (!directory.Exists) {
-                throw new DirectoryNotFoundException();
-            }
-
-            return this.AppendExisting(new StoragePath(directory.FullName));
         }
 
         /// <summary>
