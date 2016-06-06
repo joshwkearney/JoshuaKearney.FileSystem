@@ -1,6 +1,6 @@
 # JoshuaKearney.FileSystem #
 
-This project was created out of some pieces of code that I found were duplicated across four or more of my projects, so I decided to create a repo. The goal of this project is not to replace System.IO or anything that ambitious, it's simply to supplement the existing APIs and make file IO many times easier.
+This project was created out of some pieces of code that I found were duplicated across four or more of my projects, so I decided to create a repo. The goal of this project is not to replace System.IO, it is simply to supplement the existing APIs and to make file IO several times easier.
 
 
 ### Path simplification / normalization ###
