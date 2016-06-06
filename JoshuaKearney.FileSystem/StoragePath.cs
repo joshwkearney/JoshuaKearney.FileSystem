@@ -104,6 +104,13 @@ namespace JoshuaKearney.FileSystem {
         }
 
         /// <summary>
+        /// Implicitly converts the givin string into a StoragePath
+        /// </summary>
+        public static implicit operator StoragePath(string str) {
+            return new StoragePath(str);
+        }
+
+        /// <summary>
         /// Explicitly converts the givin Uri to a StoragePaths
         /// </summary>
         public static explicit operator StoragePath(Uri uri) {
