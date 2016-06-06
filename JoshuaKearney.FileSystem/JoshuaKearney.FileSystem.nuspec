@@ -11,6 +11,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright 2016 Josh Kearney</copyright>
-    <tags>FileSystem IO Directory File/tags>
+    <tags>FileSystem IO Directory File</tags>
   </metadata>
 </package>
