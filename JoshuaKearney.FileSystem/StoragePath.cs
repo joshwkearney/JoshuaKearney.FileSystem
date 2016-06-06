@@ -141,6 +141,20 @@ namespace JoshuaKearney.FileSystem {
         }
 
         /// <summary>
+        /// Determines if one StoragePath is equal to another
+        /// </summary>
+        public static bool operator ==(StoragePath path1, StoragePath path2) {
+            return path1.Equals(path2);
+        }
+
+        /// <summary>
+        /// Determines if one Storage path is not equal to another
+        /// </summary>
+        public static bool operator !=(StoragePath path1, StoragePath path2) {
+            return !path1.Equals(path2);
+        }
+
+        /// <summary>
         /// Splits the given fragments on valid path separators, and then appends the resulting path fragments to the end of the current path
         /// </summary>
         /// <param name="fragments">The path fragments to combine</param>
@@ -229,13 +243,10 @@ namespace JoshuaKearney.FileSystem {
                 return false;
             }
             else {
-                bool equals = true;
+                string thisStr = this.ToString(PathSeparator.BackSlash, false, false).ToLowerInvariant();
+                string otherStr = other.ToString(PathSeparator.BackSlash, false, false).ToLowerInvariant();
 
-                for (int i = 0; i < this.segments.Count; i++) {
-                    equals &= this.segments[i].Equals(other.segments[i], StringComparison.CurrentCultureIgnoreCase);
-                }
-
-                return equals;
+                return thisStr == otherStr;
             }
         }
 
