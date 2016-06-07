@@ -26,7 +26,13 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Creates a StoragePath from the specified Uri
         /// </summary>
-        public StoragePath(Uri uri) : this(uri.ToString()) {
+        public StoragePath(Uri uri) : this() {
+            if (uri == null) {
+                throw new ArgumentNullException();
+            }
+            else {
+                this.CombineCore(uri.ToString());
+            }
         }
 
         /// <summary>
@@ -34,6 +40,10 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="segments"></param>
         public StoragePath(params string[] segments) {
+            if (segments == null) {
+                throw new ArgumentNullException();
+            }
+
             this.CombineCore(segments);
         }
 
@@ -109,6 +119,10 @@ namespace JoshuaKearney.FileSystem {
         /// Implicitly converts the givin Storage path to a System.Uri
         /// </summary>
         public static implicit operator Uri(StoragePath path) {
+            if (path == null) {
+                return null;
+            }
+
             return path.ToUri();
         }
 
@@ -116,6 +130,10 @@ namespace JoshuaKearney.FileSystem {
         /// Explicitly converts the givin Uri to a StoragePaths
         /// </summary>
         public static explicit operator StoragePath(Uri uri) {
+            if (uri == null) {
+                throw new ArgumentNullException();
+            }
+
             return new StoragePath(uri);
         }
 
@@ -126,6 +144,16 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="path2">The path to add</param>
         /// <returns>A new StoragePath that represents the second appended to the first</returns>
         public static StoragePath operator +(StoragePath path1, StoragePath path2) {
+            if (path1 == null && path2 == null) {
+                return null;
+            }
+            else if (path1 == null) {
+                return path2.ShallowClone();
+            }
+            else if (path2 == null) {
+                return path1.ShallowClone();
+            }
+
             return path1.Combine(path2);
         }
 
@@ -136,6 +164,16 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="path2">The path to add</param>
         /// <returns>A new StoragePath that represents the second appended to the first</returns>
         public static StoragePath operator +(StoragePath path1, string path2) {
+            if (path1 == null && path2 == null) {
+                return null;
+            }
+            else if (path1 == null) {
+                return new StoragePath(path2);
+            }
+            else if (path2 == null) {
+                return path1.ShallowClone();
+            }
+
             return path1.Combine(path2);
         }
 
@@ -146,6 +184,16 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="path2">The path to add</param>
         /// <returns>A new StoragePath that represents the second appended to the first</returns>
         public static StoragePath operator +(string path1, StoragePath path2) {
+            if (path1 == null && path2 == null) {
+                return null;
+            }
+            else if (path1 == null) {
+                return path2.ShallowClone();
+            }
+            else if (path2 == null) {
+                return new StoragePath(path1);
+            }
+
             return new StoragePath(path1).Combine(path2);
         }
 
@@ -169,8 +217,8 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="fragments">The path fragments to combine</param>
         /// <exception cref="ArgumentNullException"></exception>
         public StoragePath Combine(params string[] fragments) {
-            if (fragments == null) {
-                throw new ArgumentNullException();
+            if (fragments == null || fragments.Any(x => x == null)) {
+                return this.ShallowClone();
             }
 
             if (fragments.Any(x => InvalidPathCharacters.Any(y => x.Contains(y)))) {
@@ -190,7 +238,7 @@ namespace JoshuaKearney.FileSystem {
         /// <exception cref="ArgumentNullException"></exception>
         public StoragePath Combine(string fragment) {
             if (fragment == null) {
-                throw new ArgumentNullException();
+                return this.ShallowClone();
             }
 
             if (Path.GetInvalidPathChars().Any(x => fragment.Contains(x))) {
@@ -209,7 +257,7 @@ namespace JoshuaKearney.FileSystem {
         /// <exception cref="ArgumentException"></exception>
         public StoragePath Combine(StoragePath other) {
             if (other == null) {
-                throw new ArgumentNullException();
+                return this.ShallowClone();
             }
 
             if (other.IsAbsolute) {
@@ -228,7 +276,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="extension">The extension to set</param>
         public StoragePath SetExtension(string extension) {
             if (extension == null) {
-                throw new ArgumentNullException();
+                return this.ShallowClone();
             }
 
             if (InvalidFileNameCharacters.Any(x => extension.Contains(x))) {
@@ -248,6 +296,10 @@ namespace JoshuaKearney.FileSystem {
         }
 
         public bool Equals(StoragePath other) {
+            if (object.ReferenceEquals(other, null)) {
+                return false;
+            }
+
             if (this.segments.Count != other.segments.Count) {
                 return false;
             }
@@ -260,9 +312,13 @@ namespace JoshuaKearney.FileSystem {
         }
 
         public override bool Equals(object obj) {
+            if (obj == null) {
+                return false;
+            }
+
             StoragePath path = obj as StoragePath;
 
-            if (path == null) {
+            if (object.ReferenceEquals(path, null)) {
                 return false;
             }
             else {
