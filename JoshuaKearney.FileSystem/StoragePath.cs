@@ -31,7 +31,7 @@ namespace JoshuaKearney.FileSystem {
                 throw new ArgumentNullException();
             }
             else {
-                this.CombineCore(uri.ToString());
+                this.CombineCore(new[] { uri.ToString() });
             }
         }
 
@@ -201,6 +201,15 @@ namespace JoshuaKearney.FileSystem {
         /// Determines if one StoragePath is equal to another
         /// </summary>
         public static bool operator ==(StoragePath path1, StoragePath path2) {
+            if (object.ReferenceEquals(path1, null)) {
+                if (object.ReferenceEquals(path2, null)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+
             return path1.Equals(path2);
         }
 
@@ -208,7 +217,7 @@ namespace JoshuaKearney.FileSystem {
         /// Determines if one Storage path is not equal to another
         /// </summary>
         public static bool operator !=(StoragePath path1, StoragePath path2) {
-            return !path1.Equals(path2);
+            return !(path1 == path2);
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace JoshuaKearney.FileSystem.Tests {
             Assert.AreEqual("other.txt", path.ScopeToName().ToString());
             Assert.AreEqual("other", path.ScopeToNameWithoutExtension().ToString());
             Assert.AreEqual(@"C:\some\other\some\malformed", path.ParentDirectory.ToString());
-            Assert.AreEqual(@"C:\some\other", path.GetNthParentDirectory(3).ToString());
+            Assert.AreEqual(@"C:\some\other\some", path.GetNthParentDirectory(2).ToString());
         }
 
         [TestMethod]
@@ -58,6 +58,24 @@ namespace JoshuaKearney.FileSystem.Tests {
             Assert.AreEqual(true, path.IsAbsolute);
             Assert.AreEqual("C:somemalformedpathhere.txt", string.Join("", path.Segments));
             Assert.AreEqual(new Uri(path.ToString()), path.ToUri());
+        }
+
+        [TestMethod]
+        public void NullTests() {
+            StoragePath nullPath = null;
+            Assert.AreEqual(true, nullPath == null);
+
+            StoragePath path = new StoragePath();
+            string s1 = path.Extension;
+            bool equals = path.IsAbsolute;
+
+            Assert.AreEqual(s1, string.Empty);
+            Assert.AreEqual(equals, false);
+
+            StoragePath path2 = path + (StoragePath)null;
+            Assert.AreEqual(new StoragePath(), path2);
+
+            Assert.AreEqual(false, ((StoragePath)null) != null);
         }
     }
 }
