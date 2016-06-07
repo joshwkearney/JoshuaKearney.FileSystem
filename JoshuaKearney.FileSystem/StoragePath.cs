@@ -42,7 +42,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         public string Extension {
             get {
-                if (Path.HasExtension(this.segments.Last())) {
+                if (this.HasExtension) {
                     return Path.GetExtension(this.segments.Last());
                 }
                 else {
@@ -51,12 +51,18 @@ namespace JoshuaKearney.FileSystem {
             }
         }
 
+        public bool HasExtension {
+            get {
+                return this.segments.LastOrDefault()?.Contains(".") ?? false;
+            }
+        }
+
         /// <summary>
         /// Return a value on whether or not this path is absolute by determining if the first segment is a drive letter
         /// </summary>
         public bool IsAbsolute {
             get {
-                return this.segments.First().Contains(":");
+                return this.segments.FirstOrDefault()?.Contains(":") ?? false;
             }
         }
 
@@ -65,7 +71,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         public string Name {
             get {
-                return this.segments.Last();
+                return this.segments.LastOrDefault() ?? string.Empty;
             }
         }
 
