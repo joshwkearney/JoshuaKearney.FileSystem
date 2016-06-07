@@ -51,6 +51,9 @@ namespace JoshuaKearney.FileSystem {
             }
         }
 
+        /// <summary>
+        /// Returns a boolean value that indicates whether this path ends with an extension
+        /// </summary>
         public bool HasExtension {
             get {
                 return this.segments.LastOrDefault()?.Contains(".") ?? false;
