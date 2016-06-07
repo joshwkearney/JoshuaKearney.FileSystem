@@ -44,7 +44,7 @@ This project was created out of some pieces of code that I found were duplicated
     }
 
 # NuGet #
-This project is on nuget, and can be found [here](https://www.nuget.org/packages/JoshuaKearney.FileSystem/1.0.0).
+This project is on nuget, and can be found [here](https://www.nuget.org/packages/JoshuaKearney.FileSystem/).
 
 
 # Liscense #
