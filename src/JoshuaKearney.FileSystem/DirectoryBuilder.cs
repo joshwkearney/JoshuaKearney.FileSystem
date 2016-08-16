@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -44,7 +45,7 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// The target directory of this DirectoryBuilder
         /// </summary>
-        public StoragePath RootDirectory { get; private set; } = null;
+        public StoragePath RootDirectory { get; } = StoragePath.CurrentDirectory;
 
         /// <summary>
         /// The method of resolving file naming conflicts. The default is Rename
@@ -57,6 +58,8 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         public DirectoryBuilder AppendFile(StoragePath relativePath) {
+            //Validate.NonNull(relativePath, nameof(relativePath));
+            //Contract.Ensures(Contract.Result<DirectoryBuilder>() != null);
             return this.AppendFile(relativePath, string.Empty);
         }
 
@@ -67,6 +70,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
         public DirectoryBuilder AppendFile(StoragePath relativePath, string contents) {
+            //Contract.Ensures(Contract.Result<DirectoryBuilder>() != null);
             return this.AppendFile(relativePath, contents, Encoding.UTF8);
         }
 
@@ -78,6 +82,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="contents">The string contents to place into the new file</param>
         /// <param name="encoding">The encoding to use when saving the string to the file</param>
         public DirectoryBuilder AppendFile(StoragePath relativePath, string contents, Encoding encoding) {
+            Validate.NonNull(encoding, nameof(encoding));
             return this.AppendFile(relativePath, encoding.GetBytes(contents));
         }
 
@@ -101,9 +106,7 @@ namespace JoshuaKearney.FileSystem {
         /// Example relative paths include "foo.txt", "/directory/foo.txt", and "/directory/other/foo.txt"
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
-        public DirectoryBuilder AppendFile(string relativePath) {
-            return this.AppendFile(relativePath, string.Empty);
-        }
+        public DirectoryBuilder AppendFile(string relativePath) => this.AppendFile(relativePath, string.Empty);
 
         /// <summary>
         /// Places a new file with the specified relative path and contents into the target directory
@@ -111,9 +114,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
-        public DirectoryBuilder AppendFile(string relativePath, string contents) {
-            return this.AppendFile(relativePath, contents, Encoding.UTF8);
-        }
+        public DirectoryBuilder AppendFile(string relativePath, string contents) => this.AppendFile(relativePath, contents, Encoding.UTF8);
 
         /// <summary>
         /// Places a new file with the specified relative path, contents, and text encoding into the target directory
@@ -122,9 +123,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
         /// <param name="encoding">The encoding to use when saving the string to the file</param>
-        public DirectoryBuilder AppendFile(string relativePath, string contents, Encoding encoding) {
-            return this.AppendFile(relativePath, encoding.GetBytes(contents));
-        }
+        public DirectoryBuilder AppendFile(string relativePath, string contents, Encoding encoding) => this.AppendFile(relativePath, encoding.GetBytes(contents));
 
         /// <summary>
         /// Places a new file with the specified relative path into the target directory
@@ -132,9 +131,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The byte content to place into the file</param>
-        public DirectoryBuilder AppendFile(string relativePath, byte[] contents) {
-            return this.AppendFile(new StoragePath(relativePath), contents);
-        }
+        public DirectoryBuilder AppendFile(string relativePath, byte[] contents) => this.AppendFile(new StoragePath(relativePath), contents);
 
         /// <summary>
         /// Places a new directory into the target directory
@@ -155,9 +152,7 @@ namespace JoshuaKearney.FileSystem {
         /// Example relative paths include "/directory", "/directory/other", and "/directory/other/bar/"
         /// </summary>
         /// <param name="relativePath">The relative path to the new directory, starting in the DirectoryBuilder's target directory</param>
-        public DirectoryBuilder AppendDirectory(string relativePath) {
-            return this.AppendDirectory(new StoragePath(relativePath));
-        }
+        public DirectoryBuilder AppendDirectory(string relativePath) => this.AppendDirectory(new StoragePath(relativePath));
 
         /// <summary>
         /// Copies an existing file or directory at the specified absolute path into the target directory
@@ -188,9 +183,7 @@ namespace JoshuaKearney.FileSystem {
         /// Copies an existing file or directory at the specified absolute path into the target directory
         /// </summary>
         /// <param name="absolutePath">The location of the existing file or directory on the disk</param>
-        public DirectoryBuilder AppendExisting(string absolutePath) {
-            return this.AppendExisting(new StoragePath(absolutePath));
-        }
+        public DirectoryBuilder AppendExisting(string absolutePath) => this.AppendExisting(new StoragePath(absolutePath));
 
         /// <summary>
         /// Extracts the contents of the specified archive to the output directory

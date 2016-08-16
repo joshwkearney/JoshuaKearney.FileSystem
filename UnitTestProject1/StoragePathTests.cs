@@ -60,22 +60,22 @@ namespace JoshuaKearney.FileSystem.Tests {
             Assert.AreEqual(new Uri(path.ToString()), path.ToUri());
         }
 
-        [TestMethod]
-        public void NullTests() {
-            StoragePath nullPath = null;
-            Assert.AreEqual(true, nullPath == null);
+        //[TestMethod]
+        //public void NullTests() {
+        //    //StoragePath nullPath = null;
+        //   // Assert.AreEqual(true, nullPath == null);
 
-            StoragePath path = new StoragePath();
-            string s1 = path.Extension;
-            bool equals = path.IsAbsolute;
+        //    StoragePath path = new StoragePath();
+        //    string s1 = path.Extension;
+        //    bool equals = path.IsAbsolute;
 
-            Assert.AreEqual(s1, string.Empty);
-            Assert.AreEqual(equals, false);
+        //    Assert.AreEqual(s1, string.Empty);
+        //    Assert.AreEqual(equals, false);
 
-            StoragePath path2 = path + (StoragePath)null;
-            Assert.AreEqual(new StoragePath(), path2);
+        //    StoragePath path2 = path + (StoragePath)null;
+        //    Assert.AreEqual(new StoragePath(), path2);
 
-            Assert.AreEqual(false, ((StoragePath)null) != null);
-        }
+        //    Assert.AreEqual(false, ((StoragePath)null) != null);
+        //}
     }
 }
