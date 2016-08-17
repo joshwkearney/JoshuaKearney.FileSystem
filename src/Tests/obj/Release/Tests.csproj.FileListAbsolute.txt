@@ -1,0 +1,10 @@
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\bin\Release\JoshuaKearney.FileSystem.Tests.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\bin\Release\JoshuaKearney.FileSystem.Tests.pdb
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\bin\Release\JoshuaKearney.Core.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\bin\Release\JoshuaKearney.FileSystem.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\bin\Release\System.IO.FileSystem.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\bin\Release\System.IO.FileSystem.Primitives.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\bin\Release\JoshuaKearney.FileSystem.pdb
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\obj\Release\Tests.csprojResolveAssemblyReference.cache
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\obj\Release\JoshuaKearney.FileSystem.Tests.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\Tests\obj\Release\JoshuaKearney.FileSystem.Tests.pdb

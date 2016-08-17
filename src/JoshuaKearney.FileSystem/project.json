@@ -1,7 +1,7 @@
 ﻿{
   "supports": {},
   "dependencies": {
-    "JoshuaKearney.Core": "1.0.1",
+    "JoshuaKearney.Core": "1.0.2",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0"
   },

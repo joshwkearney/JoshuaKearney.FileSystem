@@ -52,7 +52,7 @@ namespace JoshuaKearney.FileSystem {
                 )
                 .Where(y => !string.IsNullOrWhiteSpace(y)) ?? new string[] { }
             ) {
-                if (fragment == ".." && toBuild.Count > 1 && toBuild.Last() != "..") {
+                if (fragment == ".." && toBuild.Count >= 1 && toBuild.Last() != "..") {
                     toBuild.RemoveAt(toBuild.Count - 1);
                 }
                 else {
@@ -149,7 +149,7 @@ namespace JoshuaKearney.FileSystem {
         /// Gets the current Segments of this path
         /// </summary>
 
-        public IEnumerable<string> Segments => this.Segments ?? Enumerable.Empty<string>();
+        public IEnumerable<string> Segments => this.segments ?? Enumerable.Empty<string>();
 
         /// <summary>
         /// Explicitly converts the givin Uri to a StoragePaths
@@ -232,7 +232,7 @@ namespace JoshuaKearney.FileSystem {
         }
 
         /// <summary>
-        /// Returns a value indicating whether or not a file exists at the current path
+        /// Returns a value indicating whether or not a directory exists at the current path
         /// </summary>
         public bool DirectoryExists() => Directory.Exists(this.ToString());
 
@@ -266,9 +266,9 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="nthParent">The nth parent directory to get</param>
 
         public StoragePath GetNthParentDirectory(int nthParent) {
-            Validate.Positive(nthParent, nameof(nthParent));
+            Validate.NonNegative(nthParent, nameof(nthParent));
 
-            if (this.IsAbsolute && nthParent <= this.Segments.Count()) {
+            if (this.IsAbsolute && nthParent >= this.Segments.Count()) {
                 throw new InvalidOperationException("Attempted to remove too many segments from an absolute path");
             }
 

@@ -1,0 +1,5 @@
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Release\JoshuaKearney.FileSystem.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Release\JoshuaKearney.FileSystem.pdb
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Release\JoshuaKearney.FileSystem.csprojResolveAssemblyReference.cache
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Release\JoshuaKearney.FileSystem.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Release\JoshuaKearney.FileSystem.pdb

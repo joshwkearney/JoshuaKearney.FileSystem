@@ -12,5 +12,9 @@
     <description>$description$</description>
     <copyright>Copyright 2016 Josh Kearney</copyright>
     <tags>FileSystem IO Directory File</tags>
+
+    <dependencies>
+      <dependency id="JoshuaKearney.Core" version="1.0.2" />
+    </dependencies>
   </metadata>
 </package>

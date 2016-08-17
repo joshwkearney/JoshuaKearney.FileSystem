@@ -1,0 +1,7 @@
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\JoshuaKearney.FileSystem.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\JoshuaKearney.FileSystem.pdb
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\JoshuaKearney.FileSystem.dll.CodeAnalysisLog.xml
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\JoshuaKearney.FileSystem.dll.lastcodeanalysissucceeded
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\JoshuaKearney.FileSystem.dll
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\JoshuaKearney.FileSystem.pdb
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\FileSystem.csprojResolveAssemblyReference.cache
