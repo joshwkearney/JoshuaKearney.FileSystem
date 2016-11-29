@@ -10,9 +10,9 @@ namespace JoshuaKearney.FileSystem {
 
     /// <summary>
     /// Provides an instance wrapper for System.IO.Path that is has path simplification, character
-    /// checking, normalization, operator overloading, ect. and all of the utilites from System.IO.Path
+    /// checking, normalization, operator overloading, ect, as well as all of the utilites from System.IO.Path
     /// </summary>
-    public class StoragePath : IEquatable<StoragePath> {
+    public struct StoragePath : IEquatable<StoragePath> {
         private readonly IEnumerable<string> segments;
 
         /// <summary>
@@ -20,9 +20,6 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         public StoragePath(Uri uri) : this(uri.ToString()) {
             Validate.NonNull(uri, nameof(uri));
-        }
-
-        public StoragePath() {
         }
 
         /// <summary>
@@ -96,6 +93,11 @@ namespace JoshuaKearney.FileSystem {
         /// Gets the current extension of the last segment (including the dot), or returns string.Empty if there is not an extension
         /// </summary>
 
+        /// <summary>
+        /// Returns a value indicating whether or not a directory exists at the current path
+        /// </summary>
+        public bool DirectoryExists => Directory.Exists(this.ToString());
+
         public string Extension {
             get {
                 if (this.HasExtension) {
@@ -110,6 +112,11 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Returns a boolean value that indicates whether this path ends with an extension
         /// </summary>
+
+        /// <summary>
+        /// Returns a value indicating whether or not a file exists at the current path
+        /// </summary>
+        public bool FileExists => File.Exists(this.ToString());
 
         public bool HasExtension => this.Segments.LastOrDefault()?.Contains(".") ?? false;
 
@@ -231,19 +238,10 @@ namespace JoshuaKearney.FileSystem {
             return new StoragePath(this.Segments.Concat(other.Segments));
         }
 
-        /// <summary>
-        /// Returns a value indicating whether or not a directory exists at the current path
-        /// </summary>
-        public bool DirectoryExists() => Directory.Exists(this.ToString());
-
         public bool Equals(StoragePath other) => this.Segments.SequenceEqual(other.Segments);
 
         public override bool Equals(object obj) {
-            if (obj == null) {
-                return false;
-            }
-
-            StoragePath path = obj as StoragePath;
+            StoragePath? path = obj as StoragePath?;
 
             if (object.ReferenceEquals(path, null)) {
                 return false;
@@ -253,12 +251,7 @@ namespace JoshuaKearney.FileSystem {
             }
         }
 
-        /// <summary>
-        /// Returns a value indicating whether or not a file exists at the current path
-        /// </summary>
-        public bool FileExists() => File.Exists(this.ToString());
-
-        public override int GetHashCode() => this.ToString().ToLower().GetHashCode();
+        public override int GetHashCode() => this.Segments.GetHashCode();
 
         /// <summary>
         /// Gets the nth parent directory of the current path by removeing n Segments from the end
