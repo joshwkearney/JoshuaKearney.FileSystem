@@ -3600,8 +3600,13 @@
     "": [
       "JoshuaKearney.Core >= 1.0.2",
       "Microsoft.NETCore.Portable.Compatibility >= 1.0.1",
-      "NETStandard.Library >= 1.6.0"
+      "NETStandard.Library >= 1.6.0",
+      "System.IO.Compression >= 4.1.0",
+      "System.IO.Compression.ZipFile >= 4.0.1",
+      "System.IO.FileSystem >= 4.0.1"
     ],
     ".NETStandard,Version=v1.3": []
-  }
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
 }

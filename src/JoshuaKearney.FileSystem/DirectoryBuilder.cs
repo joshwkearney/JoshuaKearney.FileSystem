@@ -35,10 +35,6 @@ namespace JoshuaKearney.FileSystem {
         public DirectoryBuilder(StoragePath directory, NameConflictOption conflictResolution = NameConflictOption.ThrowException) {
             RootDirectory = directory;
             this.ConflictResolution = conflictResolution;
-
-            if (!this.RootDirectory.DirectoryExists) {
-                throw new DirectoryNotFoundException();
-            }
         }
 
         /// <summary>
@@ -183,6 +179,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The byte content to place into the file</param>
         public DirectoryBuilder AppendFile(string relativePath, byte[] contents) => this.AppendFile(new StoragePath(relativePath), contents);
+
         /// <summary>
         /// Extracts the contents of the specified archive to the output directory
         /// </summary>
@@ -212,6 +209,10 @@ namespace JoshuaKearney.FileSystem {
         }
 
         public void Build() {
+            if (!this.RootDirectory.DirectoryExists) {
+                Directory.CreateDirectory(this.RootDirectory.ToString());
+            }
+
             // Build existing directories
             foreach (var item in existingdirectorys) {
                 AppendExistingCore(item, new StoragePath());
@@ -245,6 +246,8 @@ namespace JoshuaKearney.FileSystem {
                         this.AppendFile(new StoragePath(entry.FullName), contents);
                     }
                 }
+
+                item.Dispose();
             };
             this.zips.Clear();
 
@@ -282,7 +285,7 @@ namespace JoshuaKearney.FileSystem {
 
             // Build directories
             foreach (var item in directorysToBuild) {
-                string dir = (this.RootDirectory + item).ToString();
+                string dir = this.RootDirectory.Combine(item).ToString();
 
                 if (!Directory.Exists(dir)) {
                     Directory.CreateDirectory(dir);

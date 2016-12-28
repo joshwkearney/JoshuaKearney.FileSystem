@@ -15,6 +15,9 @@
 
     <dependencies>
       <dependency id="JoshuaKearney.Core" version="1.0.2" />
+      <dependency id="System.IO.FileSystem" version="4.0.1" />
+      <dependency id="System.IO.Compression" version="4.1.0" />
+      <dependency id="System.IO.Compression.ZipFile" version="4.0.1" />
     </dependencies>
   </metadata>
 </package>
