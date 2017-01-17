@@ -3,13 +3,13 @@
   "version": 2,
   "targets": {
     ".NETStandard,Version=v1.3": {
-      "JoshuaKearney.Core/1.0.2": {
+      "JoshuaKearney.Core/2.0.0": {
         "type": "package",
         "compile": {
-          "lib/netstandard1.3/JoshuaKearney.Core.dll": {}
+          "lib/netstandard1.0/JoshuaKearney.Core.dll": {}
         },
         "runtime": {
-          "lib/netstandard1.3/JoshuaKearney.Core.dll": {}
+          "lib/netstandard1.0/JoshuaKearney.Core.dll": {}
         }
       },
       "Microsoft.NETCore.Jit/1.0.2": {
@@ -846,13 +846,14 @@
     }
   },
   "libraries": {
-    "JoshuaKearney.Core/1.0.2": {
-      "sha512": "XM5a9Wl2bQy6d85SMrs2Mk/GwdZLicFT7Tx+3N60dquIedPFyWjAW0KR7YqpuZqChCfuFdbG5w+JIxFO66KRRw==",
+    "JoshuaKearney.Core/2.0.0": {
+      "sha512": "KgNAfqPyhC7Nz7iosUkUAYBJMvHG8o6PsfRbA/HYFraIS1stPOtUXwWLFBeTXV52t7ZHFp0NYa1acSgrnDbi3Q==",
       "type": "package",
+      "path": "JoshuaKearney.Core/2.0.0",
       "files": [
-        "JoshuaKearney.Core.1.0.2.nupkg.sha512",
+        "JoshuaKearney.Core.2.0.0.nupkg.sha512",
         "JoshuaKearney.Core.nuspec",
-        "lib/netstandard1.3/JoshuaKearney.Core.dll"
+        "lib/netstandard1.0/JoshuaKearney.Core.dll"
       ]
     },
     "Microsoft.NETCore.Jit/1.0.2": {
@@ -3598,7 +3599,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "JoshuaKearney.Core >= 1.0.2",
+      "JoshuaKearney.Core >= 2.0.0",
       "Microsoft.NETCore.Portable.Compatibility >= 1.0.1",
       "NETStandard.Library >= 1.6.0",
       "System.IO.Compression >= 4.1.0",

@@ -1,0 +1,49 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v1.0",
+    "signature": "a87347a9bcebb6083d68446a4bd1804437f2aaa8"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v1.0": {
+      "ConsoleApp1/1.0.0": {
+        "dependencies": {
+          "JoshuaKearney.FileSystem": "2.0.2"
+        },
+        "runtime": {
+          "ConsoleApp1.dll": {}
+        }
+      },
+      "JoshuaKearney.Core/2.0.0": {
+        "runtime": {
+          "lib/netstandard1.0/JoshuaKearney.Core.dll": {}
+        }
+      },
+      "JoshuaKearney.FileSystem/2.0.2": {
+        "dependencies": {
+          "JoshuaKearney.Core": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/JoshuaKearney.FileSystem.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ConsoleApp1/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "JoshuaKearney.Core/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KgNAfqPyhC7Nz7iosUkUAYBJMvHG8o6PsfRbA/HYFraIS1stPOtUXwWLFBeTXV52t7ZHFp0NYa1acSgrnDbi3Q=="
+    },
+    "JoshuaKearney.FileSystem/2.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gylK4sUTsDsq7ikJOMei8wDIasPGSV+zItqg/4lzcRGMAFDfmpwwQZL5kLlP7PMuCY8NEUhrimBFrwKsSu/bzw=="
+    }
+  }
+}

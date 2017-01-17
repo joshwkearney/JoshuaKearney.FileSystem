@@ -47,6 +47,7 @@ namespace JoshuaKearney.FileSystem {
         /// The target directory of this DirectoryBuilder
         /// </summary>
         public StoragePath RootDirectory { get; } = StoragePath.CurrentDirectory;
+
         /// <summary>
         /// Places a new directory into the target directory
         /// Example relative paths include "/directory", "/directory/other", and "/directory/other/bar/"
