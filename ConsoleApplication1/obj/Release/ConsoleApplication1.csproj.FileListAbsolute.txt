@@ -1,0 +1,6 @@
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\ConsoleApplication1\bin\Release\ConsoleApplication1.exe.config
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\ConsoleApplication1\bin\Release\ConsoleApplication1.exe
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\ConsoleApplication1\bin\Release\ConsoleApplication1.pdb
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\ConsoleApplication1\obj\Release\ConsoleApplication1.csprojResolveAssemblyReference.cache
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\ConsoleApplication1\obj\Release\ConsoleApplication1.exe
+D:\joshw\Programming\Repos\JoshuaKearney.FileSystem\ConsoleApplication1\obj\Release\ConsoleApplication1.pdb

@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "exports": {
+    "JoshuaKearney.FileSystem/1.0.0": {
+      "type": "project",
+      "framework": ".NETStandard,Version=v1.3",
+      "compile": {
+        "bin/Release/JoshuaKearney.FileSystem.dll": {}
+      },
+      "runtime": {
+        "bin/Release/JoshuaKearney.FileSystem.dll": {}
+      }
+    }
+  }
+}
