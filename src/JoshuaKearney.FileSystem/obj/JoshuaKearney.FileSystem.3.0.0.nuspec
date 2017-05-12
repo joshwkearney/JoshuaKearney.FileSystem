@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>JoshuaKearney.FileSystem</id>
+    <version>3.0.0</version>
+    <title>JoshuaKearney.FileSystem</title>
+    <authors>Josh Kearney</authors>
+    <owners>Josh Kearney</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/Blue0500/JoshuaKearney.FileSystem/master/LICENSE</licenseUrl>
+    <description>A simple library to improve file IO that includes path normalization and easier ways to create directory trees</description>
+    <copyright>Copyright © 2017</copyright>
+    <tags>FileSystem IO Directory File Path</tags>
+    <repository url="https://github.com/Blue0500/JoshuaKearney.FileSystem" />
+    <dependencies>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="JoshuaKearney.Core" version="2.0.0" exclude="Build,Analyzers" />
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="JoshuaKearney.Core" version="2.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.IO.Compression" version="4.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.IO.FileSystem" version="4.0.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Release\net46\JoshuaKearney.FileSystem.dll" target="lib\net46\JoshuaKearney.FileSystem.dll" />
+    <file src="C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Release\netstandard1.3\JoshuaKearney.FileSystem.dll" target="lib\netstandard1.3\JoshuaKearney.FileSystem.dll" />
+  </files>
+</package>

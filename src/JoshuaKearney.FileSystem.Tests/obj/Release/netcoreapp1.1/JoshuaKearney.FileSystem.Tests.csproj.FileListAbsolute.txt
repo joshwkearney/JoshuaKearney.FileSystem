@@ -1,0 +1,14 @@
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.deps.json
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.runtimeconfig.json
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.runtimeconfig.dev.json
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.pdb
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\bin\Release\netcoreapp1.1\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\obj\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.csprojResolveAssemblyReference.cache
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\obj\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.AssemblyInfo.cs
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\obj\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem.Tests\obj\Release\netcoreapp1.1\JoshuaKearney.FileSystem.Tests.pdb

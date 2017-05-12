@@ -1,0 +1,9 @@
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\JoshuaKearney.Core.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\System.IO.Compression.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\System.IO.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\System.IO.FileSystem.Primitives.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.AssemblyInfo.cs
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.pdb

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,12 +12,23 @@ namespace JoshuaKearney.FileSystem {
     /// <summary>
     /// Provides methods to create and copy files and directorys into a specified directory
     /// </summary>
-    public sealed partial class DirectoryBuilder {
+    public sealed class DirectoryBuilder : IDisposable {
         private List<StoragePath> directorysToBuild = new List<StoragePath>();
-        private List<StoragePath> existingdirectorys = new List<StoragePath>();
-        private List<StoragePath> existingFiles = new List<StoragePath>();
-        private List<Tuple<StoragePath, byte[]>> filesToBuild = new List<Tuple<StoragePath, byte[]>>();
+        private List<Tuple<StoragePath, StoragePath>> existingdirectorys = new List<Tuple<StoragePath, StoragePath>>();
+        private List<PotentialFile> filesToBuild = new List<PotentialFile>();
         private List<ZipArchive> zips = new List<ZipArchive>();
+        private List<StoragePath> deletions = new List<StoragePath>();
+
+        /// <summary>
+        /// The method of resolving file naming conflicts. The default is Rename
+        /// </summary>
+        public NameConflictOption ConflictResolution { get; set; }
+
+        // Properties
+        /// <summary>
+        /// The target directory of this DirectoryBuilder
+        /// </summary>
+        public StoragePath RootDirectory { get; } = StoragePath.CurrentDirectory;
 
         /// <summary>
         /// Creates a new DirectoryBuilder that will place items in the specified directory
@@ -32,20 +44,13 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="directory">The target directory</param>
         /// <param name="conflictResolution">The method that will be used to resolve naming conflicts</param>
         public DirectoryBuilder(StoragePath directory, NameConflictOption conflictResolution = NameConflictOption.ThrowException) {
-            RootDirectory = directory;
+            this.RootDirectory = directory;
             this.ConflictResolution = conflictResolution;
         }
 
-        /// <summary>
-        /// The method of resolving file naming conflicts. The default is Rename
-        /// </summary>
-        public NameConflictOption ConflictResolution { get; set; }
-
-        // Properties
-        /// <summary>
-        /// The target directory of this DirectoryBuilder
-        /// </summary>
-        public StoragePath RootDirectory { get; } = StoragePath.CurrentDirectory;
+        ~DirectoryBuilder() {
+            Dispose();
+        }
 
         /// <summary>
         /// Places a new directory into the target directory
@@ -73,17 +78,18 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="absolutePath">The location of the existing file or directory on the disk</param>
         /// <returns></returns>
-        public DirectoryBuilder AppendExisting(StoragePath absolutePath) {
+        public DirectoryBuilder AppendExisting(StoragePath relativePath, StoragePath absolutePath) {
             if (!absolutePath.IsAbsolute) {
                 throw new IOException("The path you specified is not an absolute path");
             }
 
-            if (Directory.Exists(absolutePath.ToString())) {
-                this.existingdirectorys.Add(absolutePath);
+            string path = absolutePath.ToString();
+            if (Directory.Exists(path)) {
+                this.existingdirectorys.Add(Tuple.Create(relativePath, absolutePath));
             }
             else {
-                if (File.Exists(absolutePath.ToString())) {
-                    this.existingFiles.Add(absolutePath);
+                if (File.Exists(path)) {
+                    this.AppendFile(relativePath, () => new FileStream(absolutePath.ToString(), FileMode.Open));
                 }
                 else {
                     throw new FileNotFoundException();
@@ -97,7 +103,7 @@ namespace JoshuaKearney.FileSystem {
         /// Copies an existing file or directory at the specified absolute path into the target directory
         /// </summary>
         /// <param name="absolutePath">The location of the existing file or directory on the disk</param>
-        public DirectoryBuilder AppendExisting(string absolutePath) => this.AppendExisting(new StoragePath(absolutePath));
+        public DirectoryBuilder AppendExisting(string relativePath, string absolutePath) => this.AppendExisting(new StoragePath(relativePath), new StoragePath(absolutePath));
 
         /// <summary>
         /// Places a new file with the specified relative path into the target directory
@@ -105,8 +111,6 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         public DirectoryBuilder AppendFile(StoragePath relativePath) {
-            //Validate.NonNull(relativePath, nameof(relativePath));
-            //Contract.Ensures(Contract.Result<DirectoryBuilder>() != null);
             return this.AppendFile(relativePath, string.Empty);
         }
 
@@ -117,7 +121,6 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
         public DirectoryBuilder AppendFile(StoragePath relativePath, string contents) {
-            //Contract.Ensures(Contract.Result<DirectoryBuilder>() != null);
             return this.AppendFile(relativePath, contents, Encoding.UTF8);
         }
 
@@ -144,7 +147,22 @@ namespace JoshuaKearney.FileSystem {
                 throw new IOException("The path you specified is not a relative path");
             }
 
-            filesToBuild.Add(Tuple.Create(relativePath, contents));
+            this.filesToBuild.Add(new PotentialFile(relativePath, new Lazy<Stream>(() => new MemoryStream(contents))));
+            return this;
+        }
+
+        /// <summary>
+        /// Places a new file with the specified relative path into the target directory
+        /// Example relative paths include "foo.txt", "/directory/foo.txt", and "/directory/other/foo.txt"
+        /// </summary>
+        /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
+        /// <param name="contents">A <see cref="Func{Stream}"/> that returns a stream to the file contents</param>
+        public DirectoryBuilder AppendFile(StoragePath relativePath, Func<Stream> contents) {
+            if (relativePath.IsAbsolute) {
+                throw new IOException("The path you specified is not a relative path");
+            }
+
+            this.filesToBuild.Add(new PotentialFile(relativePath, new Lazy<Stream>(contents)));
             return this;
         }
 
@@ -181,6 +199,21 @@ namespace JoshuaKearney.FileSystem {
         public DirectoryBuilder AppendFile(string relativePath, byte[] contents) => this.AppendFile(new StoragePath(relativePath), contents);
 
         /// <summary>
+        /// Places a new file with the specified relative path into the target directory
+        /// Example relative paths include "foo.txt", "/directory/foo.txt", and "/directory/other/foo.txt"
+        /// </summary>
+        /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
+        /// <param name="contents">A <see cref="Func{Stream}"/> that returns a stream to the file contents</param>
+        public DirectoryBuilder AppendFile(string relativePath, Func<Stream> contents) => this.AppendFile(new StoragePath(relativePath), contents);
+
+        public DirectoryBuilder Delete(StoragePath relativePath) {
+            this.deletions.Add(relativePath);
+            return this;
+        }
+
+        public DirectoryBuilder Delete(string relativePath) => this.Delete(new StoragePath(relativePath));
+
+        /// <summary>
         /// Extracts the contents of the specified archive to the output directory
         /// </summary>
         /// <param name="zip">The zip archive to extract</param>
@@ -200,91 +233,42 @@ namespace JoshuaKearney.FileSystem {
         }
 
         /// <summary>
-        /// Runs all operations on the target directory asychronously
+        /// Runs all operations on the target directory asynchronously
         /// </summary>
         public async Task BuildAsync() {
-            await Task.Run(() => {
-                this.Build();
-            });
-        }
-
-        public void Build() {
-            if (!this.RootDirectory.DirectoryExists) {
+            if (!Directory.Exists(this.RootDirectory.ToString())) {
                 Directory.CreateDirectory(this.RootDirectory.ToString());
             }
 
-            // Build existing directories
-            foreach (var item in existingdirectorys) {
-                AppendExistingCore(item, new StoragePath());
-            };
-            this.existingdirectorys.Clear();
-
-            // Read the existing files
-            foreach (var item in existingFiles) {
-                StoragePath name = item.ScopeToName();
-
-                if (!File.Exists(item.ToString())) {
-                    throw new FileNotFoundException($"The file '{name.ToString()}' does not exist");
-                }
-
-                byte[] contents = File.ReadAllBytes(item.ToString());
-                this.filesToBuild.Add(Tuple.Create(name, contents));
-            };
-            this.existingFiles.Clear();
-
-            // Read all zip files
-            foreach (var item in zips) {
-                foreach (var entry in item.Entries) {
-                    using (var stream = entry.Open()) {
-                        byte[] contents;
-
-                        using (MemoryStream ms = new MemoryStream()) {
-                            stream.CopyTo(ms);
-                            contents = ms.ToArray();
-                        }
-
-                        this.AppendFile(new StoragePath(entry.FullName), contents);
-                    }
-                }
-
-                item.Dispose();
-            };
-            this.zips.Clear();
-
-            // Build files
-            foreach (var item in filesToBuild) {
-                StoragePath path = this.RootDirectory + item.Item1;
-                StoragePath dir = path.ParentDirectory;
-
-                if (!Directory.Exists(dir.ToString())) {
-                    Directory.CreateDirectory(dir.ToString());
-                }
-
-                if (this.ConflictResolution == NameConflictOption.Overwrite) {
-                    File.WriteAllBytes(path.ToString(), item.Item2 ?? new byte[0]);
+            // Delete files and folders
+            foreach(var item in this.deletions) {
+                if (File.Exists(item.ToString())) {
+                    File.Delete(item.ToString());
                 }
                 else {
-                    bool targetExists = File.Exists(path.ToString());
-                    if (this.ConflictResolution == NameConflictOption.Skip && !targetExists) {
-                        File.WriteAllBytes(path.ToString(), item.Item2 ?? new byte[0]);
-                    }
-                    else if (this.ConflictResolution == NameConflictOption.ThrowException) {
-                        if (targetExists) {
-                            throw new IOException($"The file '{Path.GetFileName(path.ToString())}' already exists");
-                        }
-                        else {
-                            File.WriteAllBytes(path.ToString(), item.Item2 ?? new byte[0]);
-                        }
-                    }
-                    else if (this.ConflictResolution == NameConflictOption.Rename) {
-                        File.WriteAllBytes(ResolveFileName(path.ToString()), item.Item2 ?? new byte[0]);
+                    this.DeleteDirectoryCore(item, new StoragePath());
+                }
+            }
+
+            // Build existing directories
+            foreach (var item in this.existingdirectorys) {
+                AppendDirectoryCore(item.Item2, item.Item1);
+            }
+            this.existingdirectorys.Clear();
+
+            // Read all zip files
+            foreach (var item in this.zips) {
+                using (item) {
+                    foreach (var entry in item.Entries) {
+                        var stream = entry.Open();
+                        this.AppendFile(entry.FullName, () => stream);
                     }
                 }
-            };
-            this.filesToBuild.Clear();
+            }
+            this.zips.Clear();
 
             // Build directories
-            foreach (var item in directorysToBuild) {
+            foreach (var item in this.directorysToBuild) {
                 string dir = this.RootDirectory.Combine(item).ToString();
 
                 if (!Directory.Exists(dir)) {
@@ -292,6 +276,48 @@ namespace JoshuaKearney.FileSystem {
                 }
             };
             this.directorysToBuild.Clear();
+
+            // Build files
+            foreach (var item in this.filesToBuild) {
+                async Task WriteFile(string p, FileMode mode) {
+                    using (FileStream writer = new FileStream(p, mode)) {
+                        using (var reader = item.Stream) {
+                            await reader.CopyToAsync(writer);
+                        }
+
+                        await writer.FlushAsync();
+                    }
+                }
+
+                StoragePath path = this.RootDirectory + item.Path;
+                string dir = path.ParentDirectory.ToString();
+
+                if (!Directory.Exists(dir)) {
+                    Directory.CreateDirectory(dir);
+                }
+
+                bool targetExists = File.Exists(path.ToString());
+                if (this.ConflictResolution == NameConflictOption.ThrowException && targetExists) {
+                    throw new IOException($"The file '{Path.GetFileName(path.ToString())}' already exists");
+                }
+                else if (this.ConflictResolution == NameConflictOption.Skip && targetExists) {
+                    continue;
+                }
+                else if (this.ConflictResolution == NameConflictOption.Rename && targetExists) {
+                    await WriteFile(ResolveFileName(path.ToString()), FileMode.Create);
+                }
+                else {
+                    await WriteFile(path.ToString(), FileMode.Create);
+                }
+            };
+            this.filesToBuild.Clear();
+        }
+
+        /// <summary>
+        /// Runs all operations on the target directory synchronously
+        /// </summary>
+        public void Build() {
+            this.BuildAsync().GetAwaiter().GetResult();
         }
 
         private static string ResolveFileName(string path) {
@@ -316,19 +342,55 @@ namespace JoshuaKearney.FileSystem {
             }
         }
 
-        private void AppendExistingCore(StoragePath source, StoragePath relativeDir) {
+        private void AppendDirectoryCore(StoragePath source, StoragePath level) {
             // Copy each file into the new directory.
-            foreach (var fi in Directory.EnumerateFiles(source.ToString())) {
-                byte[] contents = File.ReadAllBytes(fi);
-                this.AppendFile(relativeDir + Path.GetFileName(fi), contents);
-            };
+            foreach (var file in Directory.EnumerateFiles(source.ToString()).Select(x => new StoragePath(x))) {
+                this.AppendExisting(level + file.Name, file);
+            }
 
             // Copy each subdirectory using recursion.
-            foreach (string sub in Directory.EnumerateDirectories(source.ToString())) {
-                var subName = Path.GetFileName(sub.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
-                relativeDir = relativeDir + subName;
-                this.AppendDirectory(relativeDir);
-                AppendExistingCore(new StoragePath(sub), relativeDir);
+            foreach (var sub in Directory.EnumerateDirectories(source.ToString()).Select(x => new StoragePath(x))) {
+                this.AppendDirectory(level + sub.Name);
+                AppendDirectoryCore(sub, level + sub.Name);
+            }
+        }
+
+        private void DeleteDirectoryCore(StoragePath source, StoragePath level) {
+            // Copy each file into the new directory.
+            foreach (string file in Directory.EnumerateFiles(source.ToString())) {
+                File.Delete(file);
+            }
+
+            // Delete each subdirectory using recursion.
+            foreach (var sub in Directory.EnumerateDirectories(source.ToString()).Select(x => new StoragePath(x))) {
+                DeleteDirectoryCore(sub, level + sub.Name);
+            }
+
+            Directory.Delete(source.ToString());
+        }
+
+        public void Dispose() {
+            foreach (var zip in this.zips) {
+                zip.Dispose();
+            }
+
+            this.directorysToBuild = new List<StoragePath>();
+            this.existingdirectorys = new List<Tuple<StoragePath, StoragePath>>();
+            this.filesToBuild = new List<PotentialFile>();
+            this.zips = new List<ZipArchive>();
+            this.deletions = new List<StoragePath>();
+        }
+
+        private class PotentialFile {
+            private Lazy<Stream> stream;
+
+            public Stream Stream => this.stream.Value;
+
+            public StoragePath Path { get; }
+
+            public PotentialFile(StoragePath path, Lazy<Stream> stream) {
+                this.stream = stream;
+                this.Path = path;
             }
         }
     }

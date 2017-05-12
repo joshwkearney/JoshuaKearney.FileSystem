@@ -1,0 +1,6 @@
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\netstandard1.3\JoshuaKearney.FileSystem.deps.json
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\netstandard1.3\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\netstandard1.3\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.AssemblyInfo.cs
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.pdb

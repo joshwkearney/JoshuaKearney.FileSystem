@@ -24,29 +24,27 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Creates a StoragePath from the specified path Segments
         /// </summary>
-
         public StoragePath(params string[] Segments) : this((IEnumerable<string>)Segments) {
         }
 
         /// <summary>
         /// Creates a StoragePath from the specified path Segments
         /// </summary>
-        /// <param name="Segments"></param>
-        public StoragePath(IEnumerable<string> Segments) : this() {
-            Segments = Segments ?? Enumerable.Empty<string>();
+        /// <param name="segments"></param>
+        public StoragePath(IEnumerable<string> segments) : this() {
+            segments = segments ?? Enumerable.Empty<string>();
 
             List<string> toBuild = new List<string>();
 
-            // Add null coalesce for code contracts
             foreach (string fragment in
-                Segments
-                .Select(x => x ?? string.Empty)
+                segments
+                .Select(x => x)
                 .SelectMany(x =>
                     x
                     .Replace(PathSeparator.ForwardSlash.GetCharacter(), PathSeparator.BackSlash.GetCharacter())
                     .Split(new[] { PathSeparator.BackSlash.GetCharacter() })
                 )
-                .Where(y => !string.IsNullOrWhiteSpace(y)) ?? new string[] { }
+                .Where(y => !string.IsNullOrWhiteSpace(y))
             ) {
                 if (fragment == ".." && toBuild.Count >= 1 && toBuild.Last() != "..") {
                     toBuild.RemoveAt(toBuild.Count - 1);
@@ -73,30 +71,21 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Gets a StoragePath representing the current working directory of this application
         /// </summary>
-
         public static StoragePath CurrentDirectory { get; } = new StoragePath(Directory.GetCurrentDirectory());
 
         /// <summary>
         /// Gets an array containing the characters not allowed in file names
         /// </summary>
-
         public static IEnumerable<char> InvalidFileNameCharacters { get; } = Path.GetInvalidFileNameChars();
 
         /// <summary>
         /// Gets an array containing the characters not allowed in paths
         /// </summary>
-
         public static IEnumerable<char> InvalidPathCharacters { get; } = Path.GetInvalidPathChars();
 
         /// <summary>
         /// Gets the current extension of the last segment (including the dot), or returns string.Empty if there is not an extension
         /// </summary>
-
-        /// <summary>
-        /// Returns a value indicating whether or not a directory exists at the current path
-        /// </summary>
-        public bool DirectoryExists => Directory.Exists(this.ToString());
-
         public string Extension {
             get {
                 if (this.HasExtension) {
@@ -111,24 +100,16 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Returns a boolean value that indicates whether this path ends with an extension
         /// </summary>
-
-        /// <summary>
-        /// Returns a value indicating whether or not a file exists at the current path
-        /// </summary>
-        public bool FileExists => File.Exists(this.ToString());
-
         public bool HasExtension => this.Segments.LastOrDefault()?.Contains(".") ?? false;
 
         /// <summary>
         /// Return a value on whether or not this path is absolute by determining if the first segment is a drive letter
         /// </summary>
-
         public bool IsAbsolute => this.Segments.FirstOrDefault()?.Contains(":") ?? false;
 
         /// <summary>
         /// Get the file or directory name of the path by retrieving the last path segment
         /// </summary>
-
         public string Name {
             get {
                 return this.Segments.LastOrDefault() ?? string.Empty;
@@ -138,7 +119,6 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Gets the file name of the path by retriveing the last path segment without the extension
         /// </summary>
-
         public string NameWithoutExtension {
             get {
                 return Path.GetFileNameWithoutExtension(this.Name);
@@ -148,13 +128,11 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Returns a storage path with the value of the parent or containing directory
         /// </summary>
-
         public StoragePath ParentDirectory => this.GetNthParentDirectory(1);
 
         /// <summary>
         /// Gets the current Segments of this path
         /// </summary>
-
         public IEnumerable<string> Segments => this.segments ?? Enumerable.Empty<string>();
 
         /// <summary>
@@ -213,14 +191,12 @@ namespace JoshuaKearney.FileSystem {
         /// Splits the given fragments on valid path separators, and then appends the resulting path fragments to the end of the current path
         /// </summary>
         /// <param name="fragments">The path fragments to combine</param>
-
         public StoragePath Combine(params string[] fragments) => new StoragePath(fragments);
 
         /// <summary>
         /// Splits the given fragment on valid path separators, and then appends the resulting path fragment to the end of the current path
         /// </summary>
         /// <param name="fragments">The path fragments to combine</param>
-
         public StoragePath Combine(string fragment) {
             //Contract.Requires(!fragment.ContainsInvalidPathChars());
             return new StoragePath(this.Segments.Concat(new[] { fragment }));
@@ -256,7 +232,6 @@ namespace JoshuaKearney.FileSystem {
         /// Gets the nth parent directory of the current path by removeing n Segments from the end
         /// </summary>
         /// <param name="nthParent">The nth parent directory to get</param>
-
         public StoragePath GetNthParentDirectory(int nthParent) {
             Validate.NonNegative(nthParent, nameof(nthParent));
 
@@ -276,20 +251,17 @@ namespace JoshuaKearney.FileSystem {
         /// Gets a StoragePath with the value of this.Name
         /// </summary>
         /// <returns></returns>
-
         public StoragePath ScopeToName() => new StoragePath(this.Name);
 
         /// <summary>
         /// Gets a StoragePath with the value of this.NameWithoutPath
         /// </summary>
-
         public StoragePath ScopeToNameWithoutExtension() => new StoragePath(this.NameWithoutExtension);
 
         /// <summary>
         /// Sets or adds the spedified extension of the current path
         /// </summary>
         /// <param name="extension">The extension to set</param>
-
         public StoragePath SetExtension(string extension) {
             if (extension == null) {
                 return this;
@@ -305,7 +277,6 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Returns a string representation of the current path
         /// </summary>
-
         public override string ToString() {
             return this.ToString(PathSeparator.BackSlash);
         }
@@ -317,7 +288,6 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="leadingSlash">Whether or not a slash should be prepended to the path</param>
         /// <param name="trailingSlash">Whether or not a slash should be appended to the path</param>
-
         public string ToString(PathSeparator slashType, bool leadingSlash = false, bool trailingSlash = false) {
             string ret = string.Join(slashType.GetCharacter().ToString(), this.Segments);
 
@@ -330,13 +300,12 @@ namespace JoshuaKearney.FileSystem {
             }
 
             // Null coalesce for code contracts
-            return ret ?? String.Empty;
+            return ret ?? string.Empty;
         }
 
         /// <summary>
         /// Converts the current StoragePath to a System.Uri
         /// </summary>
-
         public Uri ToUri() {
             return new Uri(this.ToString(), UriKind.RelativeOrAbsolute);
         }

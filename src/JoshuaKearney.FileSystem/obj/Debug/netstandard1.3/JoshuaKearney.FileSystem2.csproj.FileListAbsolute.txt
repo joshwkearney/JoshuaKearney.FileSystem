@@ -1,0 +1,7 @@
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem2\bin\Debug\netstandard1.3\JoshuaKearney.FileSystem.deps.json
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem2\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem2.AssemblyInfo.cs
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem2\bin\Debug\netstandard1.3\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem2\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem2.csprojResolveAssemblyReference.cache
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem2\bin\Debug\netstandard1.3\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem2\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem2\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.pdb
