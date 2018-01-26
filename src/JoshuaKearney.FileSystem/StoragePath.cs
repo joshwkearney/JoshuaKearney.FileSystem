@@ -167,7 +167,6 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="path2">The path to add</param>
         /// <returns>A new StoragePath that represents the second appended to the first</returns>
         public static StoragePath operator +(StoragePath path1, string path2) {
-            //Contract.Requires(!path2.ContainsInvalidPathChars());
             return path1.Combine(path2);
         }
 

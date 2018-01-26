@@ -3934,7 +3934,7 @@
     "C:\\Users\\joshw\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "3.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\joshw\\Source\\Repos\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem\\JoshuaKearney.FileSystem.csproj",
       "projectName": "JoshuaKearney.FileSystem",

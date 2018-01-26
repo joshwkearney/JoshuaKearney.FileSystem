@@ -7,3 +7,4 @@ C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSyste
 C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Release\net46\JoshuaKearney.FileSystem.AssemblyInfo.cs
 C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Release\net46\JoshuaKearney.FileSystem.dll
 C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Release\net46\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Release\net46\JoshuaKearney.FileSystem.csprojResolveAssemblyReference.cache

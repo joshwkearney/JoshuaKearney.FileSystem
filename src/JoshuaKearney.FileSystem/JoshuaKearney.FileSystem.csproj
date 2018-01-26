@@ -24,7 +24,7 @@
     <PackageReference Include="JoshuaKearney.Core" Version="2.0.0" />
     
     <!-- .NET 4.6 References -->
-    <PackageReference Condition="'$(TargetFramework)'=='net46'" Include="System.IO.FileSystem" Version="4.0.1.0" />
-    <PackageReference Condition="'$(TargetFramework)'=='net46'" Include="System.IO.Compression" Version="4.0.1.0" />
+    <PackageReference Condition="'$(TargetFramework)'=='net46'" Include="System.IO.FileSystem" Version="4.0.1" />
+    <PackageReference Condition="'$(TargetFramework)'=='net46'" Include="System.IO.Compression" Version="4.0.1" />
   </ItemGroup>
 </Project>
