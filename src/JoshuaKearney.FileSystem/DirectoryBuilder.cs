@@ -13,10 +13,11 @@ namespace JoshuaKearney.FileSystem {
     /// Provides methods to create and copy files and directorys into a specified directory
     /// </summary>
     public sealed class DirectoryBuilder : IDisposable {
-        private List<StoragePath> directorysToBuild = new List<StoragePath>();
-        private List<Tuple<StoragePath, StoragePath>> existingdirectorys = new List<Tuple<StoragePath, StoragePath>>();
-        private List<PotentialFile> filesToBuild = new List<PotentialFile>();
-        private List<ZipArchive> zips = new List<ZipArchive>();
+        private List<StoragePath> directories = new List<StoragePath>();
+        private List<Tuple<StoragePath, Stream>> files = new List<Tuple<StoragePath, Stream>>();
+        private List<Tuple<StoragePath, StoragePath>> existing = new List<Tuple<StoragePath, StoragePath>>();
+        private List<Tuple<StoragePath, ZipArchive>> zips = new List<Tuple<StoragePath, ZipArchive>>();
+        private List<Tuple<StoragePath, StoragePath>> existingZips = new List<Tuple<StoragePath, StoragePath>>();
         private List<StoragePath> deletions = new List<StoragePath>();
 
         /// <summary>
@@ -57,12 +58,12 @@ namespace JoshuaKearney.FileSystem {
         /// Example relative paths include "/directory", "/directory/other", and "/directory/other/bar/"
         /// </summary>
         /// <param name="relativePath">The relative path to the new directory, starting in the DirectoryBuilder's target directory</param>
-        public DirectoryBuilder AppendDirectory(StoragePath relativePath) {
+        public DirectoryBuilder AddDirectory(StoragePath relativePath) {
             if (relativePath.IsAbsolute) {
                 throw new IOException("The path you specified is not a relative path");
             }
 
-            this.directorysToBuild.Add(relativePath);
+            this.directories.Add(relativePath);
             return this;
         }
 
@@ -71,30 +72,16 @@ namespace JoshuaKearney.FileSystem {
         /// Example relative paths include "/directory", "/directory/other", and "/directory/other/bar/"
         /// </summary>
         /// <param name="relativePath">The relative path to the new directory, starting in the DirectoryBuilder's target directory</param>
-        public DirectoryBuilder AppendDirectory(string relativePath) => this.AppendDirectory(new StoragePath(relativePath));
+        public DirectoryBuilder AddDirectory(string relativePath) => this.AddDirectory(new StoragePath(relativePath));
 
         /// <summary>
         /// Copies an existing file or directory at the specified absolute path into the target directory
         /// </summary>
-        /// <param name="absolutePath">The location of the existing file or directory on the disk</param>
+        /// <param name="newPath">A path describing the new location of the copied file or directory</param>
+        /// <param name="existingPath">The location of the existing file or directory on the disk</param>
         /// <returns></returns>
-        public DirectoryBuilder AppendExisting(StoragePath relativePath, StoragePath absolutePath) {
-            if (!absolutePath.IsAbsolute) {
-                throw new IOException("The path you specified is not an absolute path");
-            }
-
-            string path = absolutePath.ToString();
-            if (Directory.Exists(path)) {
-                this.existingdirectorys.Add(Tuple.Create(relativePath, absolutePath));
-            }
-            else {
-                if (File.Exists(path)) {
-                    this.AppendFile(relativePath, () => new FileStream(absolutePath.ToString(), FileMode.Open));
-                }
-                else {
-                    throw new FileNotFoundException();
-                }
-            }
+        public DirectoryBuilder AddExisting(StoragePath newPath, StoragePath existingPath) {
+            this.existing.Add(new Tuple<StoragePath, StoragePath>(newPath, existingPath));
 
             return this;
         }
@@ -102,16 +89,17 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Copies an existing file or directory at the specified absolute path into the target directory
         /// </summary>
-        /// <param name="absolutePath">The location of the existing file or directory on the disk</param>
-        public DirectoryBuilder AppendExisting(string relativePath, string absolutePath) => this.AppendExisting(new StoragePath(relativePath), new StoragePath(absolutePath));
+        /// <param name="newPath">A path describing the new location of the copied file or directory</param>
+        /// <param name="existingPath">The location of the existing file or directory on the disk</param>
+        public DirectoryBuilder AddExisting(string newPath, string existingPath) => this.AddExisting(new StoragePath(newPath), new StoragePath(existingPath));
 
         /// <summary>
         /// Places a new file with the specified relative path into the target directory
         /// Example relative paths include "foo.txt", "/directory/foo.txt", and "/directory/other/foo.txt"
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
-        public DirectoryBuilder AppendFile(StoragePath relativePath) {
-            return this.AppendFile(relativePath, string.Empty);
+        public DirectoryBuilder AddFile(StoragePath relativePath) {
+            return this.AddFile(relativePath, string.Empty);
         }
 
         /// <summary>
@@ -120,8 +108,8 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
-        public DirectoryBuilder AppendFile(StoragePath relativePath, string contents) {
-            return this.AppendFile(relativePath, contents, Encoding.UTF8);
+        public DirectoryBuilder AddFile(StoragePath relativePath, string contents) {
+            return this.AddFile(relativePath, contents, Encoding.UTF8);
         }
 
         /// <summary>
@@ -131,9 +119,16 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
         /// <param name="encoding">The encoding to use when saving the string to the file</param>
-        public DirectoryBuilder AppendFile(StoragePath relativePath, string contents, Encoding encoding) {
-            Validate.NonNull(encoding, nameof(encoding));
-            return this.AppendFile(relativePath, encoding.GetBytes(contents));
+        public DirectoryBuilder AddFile(StoragePath relativePath, string contents, Encoding encoding) {
+            if (contents is null) {
+                throw new ArgumentNullException(nameof(contents));
+            }
+
+            if (encoding is null) {
+                throw new ArgumentNullException(nameof(encoding));
+            }
+
+            return this.AddFile(relativePath, encoding.GetBytes(contents));
         }
 
         /// <summary>
@@ -142,12 +137,9 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The byte content to place into the file</param>
-        public DirectoryBuilder AppendFile(StoragePath relativePath, byte[] contents) {
-            if (relativePath.IsAbsolute) {
-                throw new IOException("The path you specified is not a relative path");
-            }
-
-            this.filesToBuild.Add(new PotentialFile(relativePath, new Lazy<Stream>(() => new MemoryStream(contents))));
+        public DirectoryBuilder AddFile(StoragePath relativePath, byte[] contents) {
+            var stream = new MemoryStream(contents);
+            this.files.Add(new Tuple<StoragePath, Stream>(relativePath, stream));
             return this;
         }
 
@@ -157,12 +149,12 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">A <see cref="Func{Stream}"/> that returns a stream to the file contents</param>
-        public DirectoryBuilder AppendFile(StoragePath relativePath, Func<Stream> contents) {
+        public DirectoryBuilder AddFile(StoragePath relativePath, Stream contents) {
             if (relativePath.IsAbsolute) {
                 throw new IOException("The path you specified is not a relative path");
             }
 
-            this.filesToBuild.Add(new PotentialFile(relativePath, new Lazy<Stream>(contents)));
+            this.files.Add(new Tuple<StoragePath, Stream>(relativePath, contents));
             return this;
         }
 
@@ -171,7 +163,7 @@ namespace JoshuaKearney.FileSystem {
         /// Example relative paths include "foo.txt", "/directory/foo.txt", and "/directory/other/foo.txt"
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
-        public DirectoryBuilder AppendFile(string relativePath) => this.AppendFile(relativePath, string.Empty);
+        public DirectoryBuilder AddFile(string relativePath) => this.AddFile(relativePath, string.Empty);
 
         /// <summary>
         /// Places a new file with the specified relative path and contents into the target directory
@@ -179,7 +171,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
-        public DirectoryBuilder AppendFile(string relativePath, string contents) => this.AppendFile(relativePath, contents, Encoding.UTF8);
+        public DirectoryBuilder AddFile(string relativePath, string contents) => this.AddFile(relativePath, contents, Encoding.UTF8);
 
         /// <summary>
         /// Places a new file with the specified relative path, contents, and text encoding into the target directory
@@ -188,7 +180,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The string contents to place into the new file</param>
         /// <param name="encoding">The encoding to use when saving the string to the file</param>
-        public DirectoryBuilder AppendFile(string relativePath, string contents, Encoding encoding) => this.AppendFile(relativePath, encoding.GetBytes(contents));
+        public DirectoryBuilder AddFile(string relativePath, string contents, Encoding encoding) => this.AddFile(relativePath, encoding.GetBytes(contents));
 
         /// <summary>
         /// Places a new file with the specified relative path into the target directory
@@ -196,7 +188,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">The byte content to place into the file</param>
-        public DirectoryBuilder AppendFile(string relativePath, byte[] contents) => this.AppendFile(new StoragePath(relativePath), contents);
+        public DirectoryBuilder AddFile(string relativePath, byte[] contents) => this.AddFile(new StoragePath(relativePath), contents);
 
         /// <summary>
         /// Places a new file with the specified relative path into the target directory
@@ -204,7 +196,7 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="relativePath">The relative path to the new file, starting in the DirectoryBuilder's target directory</param>
         /// <param name="contents">A <see cref="Func{Stream}"/> that returns a stream to the file contents</param>
-        public DirectoryBuilder AppendFile(string relativePath, Func<Stream> contents) => this.AppendFile(new StoragePath(relativePath), contents);
+        public DirectoryBuilder AddFile(string relativePath, Stream contents) => this.AddFile(new StoragePath(relativePath), contents);
 
         public DirectoryBuilder Delete(StoragePath relativePath) {
             this.deletions.Add(relativePath);
@@ -217,8 +209,24 @@ namespace JoshuaKearney.FileSystem {
         /// Extracts the contents of the specified archive to the output directory
         /// </summary>
         /// <param name="zip">The zip archive to extract</param>
-        public DirectoryBuilder AppendZipContents(ZipArchive zip) {
-            this.zips.Add(zip);
+        public DirectoryBuilder ExtractZip(StoragePath extractDirectory, ZipArchive zip) {
+            this.zips.Add(new Tuple<StoragePath, ZipArchive>(extractDirectory, zip));
+            
+            return this;
+        }
+
+        /// <summary>
+        /// Extracts the contents of the specified archive to the output directory
+        /// </summary>
+        /// <param name="zip">The zip archive to extract</param>
+        public DirectoryBuilder ExtractZip(string extractDirectory, ZipArchive zip) => this.ExtractZip(new StoragePath(extractDirectory), zip);
+
+        /// <summary>
+        /// Extracts the contents of the specified archive to the output directory
+        /// </summary>
+        /// <param name="zip">The zip archive to extract</param>
+        public DirectoryBuilder ExtractZip(StoragePath extractDirectory, StoragePath zipPath) {
+            this.existingZips.Add(new Tuple<StoragePath, StoragePath>(extractDirectory, zipPath));
 
             return this;
         }
@@ -229,7 +237,7 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="zip">The path of the zip archive to extract</param>
         public DirectoryBuilder AppendZipContents(string zip) {
             ZipArchive arc = ZipFile.OpenRead(zip);
-            return this.AppendZipContents(arc);
+            return this.ExtractZip(arc);
         }
 
         /// <summary>
@@ -251,10 +259,10 @@ namespace JoshuaKearney.FileSystem {
             }
 
             // Build existing directories
-            foreach (var item in this.existingdirectorys) {
+            foreach (var item in this.existing) {
                 AppendDirectoryCore(item.Item2, item.Item1);
             }
-            this.existingdirectorys.Clear();
+            this.existing.Clear();
 
             // Read all zip files
             foreach (var item in this.zips) {
@@ -268,14 +276,14 @@ namespace JoshuaKearney.FileSystem {
             this.zips.Clear();
 
             // Build directories
-            foreach (var item in this.directorysToBuild) {
+            foreach (var item in this.directories) {
                 string dir = this.RootDirectory.Combine(item).ToString();
 
                 if (!Directory.Exists(dir)) {
                     Directory.CreateDirectory(dir);
                 }
             };
-            this.directorysToBuild.Clear();
+            this.directories.Clear();
 
             // Build files
             foreach (var item in this.filesToBuild) {
@@ -345,18 +353,18 @@ namespace JoshuaKearney.FileSystem {
         private void AppendDirectoryCore(StoragePath source, StoragePath level) {
             // Copy each file into the new directory.
             foreach (var file in Directory.EnumerateFiles(source.ToString()).Select(x => new StoragePath(x))) {
-                this.AppendExisting(level + file.Name, file);
+                this.AddExisting(level + file.Name, file);
             }
 
             // Copy each subdirectory using recursion.
             foreach (var sub in Directory.EnumerateDirectories(source.ToString()).Select(x => new StoragePath(x))) {
-                this.AppendDirectory(level + sub.Name);
+                this.AddDirectory(level + sub.Name);
                 AppendDirectoryCore(sub, level + sub.Name);
             }
         }
 
         private void DeleteDirectoryCore(StoragePath source, StoragePath level) {
-            // Copy each file into the new directory.
+            // Delete each file in the directory.
             foreach (string file in Directory.EnumerateFiles(source.ToString())) {
                 File.Delete(file);
             }
@@ -370,28 +378,19 @@ namespace JoshuaKearney.FileSystem {
         }
 
         public void Dispose() {
+            foreach (var pair in this.files) {
+                pair.Item2.Dispose();
+            }
+
             foreach (var zip in this.zips) {
                 zip.Dispose();
             }
 
-            this.directorysToBuild = new List<StoragePath>();
-            this.existingdirectorys = new List<Tuple<StoragePath, StoragePath>>();
+            this.directories = new List<StoragePath>();
+            this.existing = new List<Tuple<StoragePath, StoragePath>>();
             this.filesToBuild = new List<PotentialFile>();
             this.zips = new List<ZipArchive>();
             this.deletions = new List<StoragePath>();
-        }
-
-        private class PotentialFile {
-            private Lazy<Stream> stream;
-
-            public Stream Stream => this.stream.Value;
-
-            public StoragePath Path { get; }
-
-            public PotentialFile(StoragePath path, Lazy<Stream> stream) {
-                this.stream = stream;
-                this.Path = path;
-            }
         }
     }
 }

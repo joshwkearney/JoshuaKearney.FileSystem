@@ -11,12 +11,13 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("JoshuaKearney.FileSystem")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Josh Kearney")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2017")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute("Package Description")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("A simple library to improve file IO that includes path normalization and easier w" +
+    "ays to create directory trees")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("3.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("3.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("JoshuaKearney.FileSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JoshuaKearney.FileSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("3.0.0.0")]

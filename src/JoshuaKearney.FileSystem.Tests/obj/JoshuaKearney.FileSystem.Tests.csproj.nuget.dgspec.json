@@ -1,0 +1,120 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem.Tests\\JoshuaKearney.FileSystem.Tests.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem.Tests\\JoshuaKearney.FileSystem.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem.Tests\\JoshuaKearney.FileSystem.Tests.csproj",
+        "projectName": "JoshuaKearney.FileSystem.Tests",
+        "projectPath": "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem.Tests\\JoshuaKearney.FileSystem.Tests.csproj",
+        "packagesPath": "C:\\Users\\joshw\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem.Tests\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\joshw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp1.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp1.1": {
+            "projectReferences": {
+              "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem\\JoshuaKearney.FileSystem.csproj": {
+                "projectPath": "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem\\JoshuaKearney.FileSystem.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp1.1": {
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[1.1.11, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[1.1.11, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[15.0.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "target": "Package",
+              "version": "[1.1.2, )",
+              "autoReferenced": true
+            }
+          }
+        }
+      }
+    },
+    "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem\\JoshuaKearney.FileSystem.csproj": {
+      "version": "3.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem\\JoshuaKearney.FileSystem.csproj",
+        "projectName": "JoshuaKearney.FileSystem",
+        "projectPath": "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem\\JoshuaKearney.FileSystem.csproj",
+        "packagesPath": "C:\\Users\\joshw\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\joshw\\source\\repos\\Blue0500\\JoshuaKearney.FileSystem\\src\\JoshuaKearney.FileSystem\\obj\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\joshw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net46",
+          "netstandard1.3"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net46": {
+            "projectReferences": {}
+          },
+          "netstandard1.3": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net46": {},
+        "netstandard1.3": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "target": "Package",
+              "version": "[1.6.1, )",
+              "autoReferenced": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

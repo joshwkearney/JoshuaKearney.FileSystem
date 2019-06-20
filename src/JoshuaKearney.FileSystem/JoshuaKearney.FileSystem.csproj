@@ -19,12 +19,8 @@
     <Description>A simple library to improve file IO that includes path normalization and easier ways to create directory trees</Description>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- Universal References -->
-    <PackageReference Include="JoshuaKearney.Core" Version="2.0.0" />
-    
+  <ItemGroup>    
     <!-- .NET 4.6 References -->
-    <PackageReference Condition="'$(TargetFramework)'=='net46'" Include="System.IO.FileSystem" Version="4.0.1" />
-    <PackageReference Condition="'$(TargetFramework)'=='net46'" Include="System.IO.Compression" Version="4.0.1" />
+    <Reference Condition="'$(TargetFramework)'=='net46'" Include="System.IO.Compression" />
   </ItemGroup>
 </Project>

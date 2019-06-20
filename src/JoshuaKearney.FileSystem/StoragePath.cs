@@ -17,50 +17,37 @@ namespace JoshuaKearney.FileSystem {
         /// <summary>
         /// Creates a StoragePath from the specified Uri
         /// </summary>
-        public StoragePath(Uri uri) : this(uri.ToString()) {
-            Validate.NonNull(uri, nameof(uri));
-        }
+        public StoragePath(Uri uri) : this(uri.ToString()) { }
 
         /// <summary>
         /// Creates a StoragePath from the specified path Segments
         /// </summary>
-        public StoragePath(params string[] Segments) : this((IEnumerable<string>)Segments) {
-        }
+        public StoragePath(params string[] Segments) : this((IEnumerable<string>)Segments) { }
 
         /// <summary>
         /// Creates a StoragePath from the specified path Segments
         /// </summary>
         /// <param name="segments"></param>
         public StoragePath(IEnumerable<string> segments) : this() {
-            segments = segments ?? Enumerable.Empty<string>();
+            if (segments is null) {
+                throw new ArgumentNullException(nameof(segments));
+            }
 
             List<string> toBuild = new List<string>();
 
-            foreach (string fragment in
-                segments
+            segments = segments
                 .Select(x => x)
                 .SelectMany(x =>
-                    x
-                    .Replace(PathSeparator.ForwardSlash.GetCharacter(), PathSeparator.BackSlash.GetCharacter())
-                    .Split(new[] { PathSeparator.BackSlash.GetCharacter() })
+                    x.Replace(PathSeparator.ForwardSlash.GetCharacter(), PathSeparator.BackSlash.GetCharacter())
+                     .Split(new[] { PathSeparator.BackSlash.GetCharacter() })
                 )
-                .Where(y => !string.IsNullOrWhiteSpace(y))
-            ) {
-                if (fragment == ".." && toBuild.Count >= 1 && toBuild.Last() != "..") {
+                .Where(y => !string.IsNullOrWhiteSpace(y));
+
+            foreach (string fragment in segments) {
+                if (fragment == ".." && toBuild.Count >= 1 && toBuild[toBuild.Count - 1] != "..") {
                     toBuild.RemoveAt(toBuild.Count - 1);
                 }
                 else {
-                    if (toBuild.Count == 0) {
-                        if (Path.GetInvalidPathChars().Any(x => fragment.Contains(x.ToString()))) {
-                            throw new InvalidOperationException("This path contains invalid characters");
-                        }
-                    }
-                    else {
-                        if (Path.GetInvalidFileNameChars().Any(x => fragment.Contains(x.ToString()))) {
-                            throw new InvalidOperationException("This path contains invalid characters");
-                        }
-                    }
-
                     toBuild.Add(fragment);
                 }
             }
@@ -72,16 +59,6 @@ namespace JoshuaKearney.FileSystem {
         /// Gets a StoragePath representing the current working directory of this application
         /// </summary>
         public static StoragePath CurrentDirectory { get; } = new StoragePath(Directory.GetCurrentDirectory());
-
-        /// <summary>
-        /// Gets an array containing the characters not allowed in file names
-        /// </summary>
-        public static IEnumerable<char> InvalidFileNameCharacters { get; } = Path.GetInvalidFileNameChars();
-
-        /// <summary>
-        /// Gets an array containing the characters not allowed in paths
-        /// </summary>
-        public static IEnumerable<char> InvalidPathCharacters { get; } = Path.GetInvalidPathChars();
 
         /// <summary>
         /// Gets the current extension of the last segment (including the dot), or returns string.Empty if there is not an extension
@@ -139,7 +116,10 @@ namespace JoshuaKearney.FileSystem {
         /// Explicitly converts the givin Uri to a StoragePaths
         /// </summary>
         public static explicit operator StoragePath(Uri uri) {
-            Validate.NonNull(uri, nameof(uri));
+             if (uri is null) {
+                throw new ArgumentNullException(nameof(uri));
+            }
+
             return new StoragePath(uri);
         }
 
@@ -156,7 +136,6 @@ namespace JoshuaKearney.FileSystem {
         public static bool operator !=(StoragePath path1, StoragePath path2) => !(path1 == path2);
 
         public static StoragePath operator +(StoragePath path1, StoragePath path2) {
-            //Contract.Requires(!path2.IsAbsolute);
             return path1.Combine(path2);
         }
 
@@ -167,6 +146,10 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="path2">The path to add</param>
         /// <returns>A new StoragePath that represents the second appended to the first</returns>
         public static StoragePath operator +(StoragePath path1, string path2) {
+            if (path2 is null) {
+                return path1;
+            }
+
             return path1.Combine(path2);
         }
 
@@ -177,7 +160,10 @@ namespace JoshuaKearney.FileSystem {
         /// <param name="path2">The path to add</param>
         /// <returns>A new StoragePath that represents the second appended to the first</returns>
         public static StoragePath operator +(string path1, StoragePath path2) {
-            //Contract.Requires(!path2.IsAbsolute);
+            if (path1 is null) {
+                return path2;
+            }
+
             return new StoragePath(path1).Combine(path2);
         }
 
@@ -197,7 +183,10 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="fragments">The path fragments to combine</param>
         public StoragePath Combine(string fragment) {
-            //Contract.Requires(!fragment.ContainsInvalidPathChars());
+            if (fragment is null) {
+                throw new ArgumentNullException(nameof(fragment));
+            }
+
             return new StoragePath(this.Segments.Concat(new[] { fragment }));
         }
 
@@ -232,8 +221,6 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="nthParent">The nth parent directory to get</param>
         public StoragePath GetNthParentDirectory(int nthParent) {
-            Validate.NonNegative(nthParent, nameof(nthParent));
-
             if (this.IsAbsolute && nthParent >= this.Segments.Count()) {
                 throw new InvalidOperationException("Attempted to remove too many segments from an absolute path");
             }
@@ -262,8 +249,8 @@ namespace JoshuaKearney.FileSystem {
         /// </summary>
         /// <param name="extension">The extension to set</param>
         public StoragePath SetExtension(string extension) {
-            if (extension == null) {
-                return this;
+            if (extension is null) {
+                throw new ArgumentNullException(nameof(extension));
             }
 
             if (!extension.StartsWith(".")) {
@@ -306,7 +293,12 @@ namespace JoshuaKearney.FileSystem {
         /// Converts the current StoragePath to a System.Uri
         /// </summary>
         public Uri ToUri() {
-            return new Uri(this.ToString(), UriKind.RelativeOrAbsolute);
+            if (this.IsAbsolute) {
+                return new Uri(this.ToString(), UriKind.Absolute);
+            }
+            else {
+                return new Uri(this.ToString(), UriKind.Relative);
+            }
         }
     }
 }

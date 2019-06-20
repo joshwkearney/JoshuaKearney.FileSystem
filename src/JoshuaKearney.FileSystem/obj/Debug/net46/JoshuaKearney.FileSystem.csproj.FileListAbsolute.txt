@@ -7,3 +7,11 @@ C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSyste
 C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.AssemblyInfo.cs
 C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.dll
 C:\Users\joshw\Source\Repos\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.csproj.CoreCompileInputs.cache
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.AssemblyInfoInputs.cache
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.AssemblyInfo.cs
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\bin\Debug\net46\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.csprojAssemblyReference.cache
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.dll
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\net46\JoshuaKearney.FileSystem.pdb
