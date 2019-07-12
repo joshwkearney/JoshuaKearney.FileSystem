@@ -12,3 +12,4 @@ C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.
 C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.AssemblyInfo.cs
 C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.dll
 C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.pdb
+C:\Users\joshw\Source\Repos\Blue0500\JoshuaKearney.FileSystem\src\JoshuaKearney.FileSystem\obj\Debug\netstandard1.3\JoshuaKearney.FileSystem.csprojAssemblyReference.cache
